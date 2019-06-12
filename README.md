@@ -1,6 +1,7 @@
 # Les Arpenteurs
 
-Dépôt public du code et des données utiles pour le projet Les Arpenteurs
+Dépôt public du code et des données utiles pour le projet Les Arpenteurs.
+Voir en ligne : https://analytics.huma-num.fr/Gilles.Bastin/reporters.gilles/
 
 ## Le projet
 
