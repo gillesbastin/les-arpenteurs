@@ -24,7 +24,7 @@ library(pals)
 library(lubridate)
 library(scales)
 
-setwd("~/zPublish/shiny/reporters.gilles")
+setwd("~/zPublish/shiny/les-arpenteurs")
 
 # READING DATA
 reportages <- read.delim("data_reportages_final.tsv", header=TRUE, sep="\t", dec = ".")
@@ -41,7 +41,7 @@ reportages <- reportages %>%
   mutate(DATE.Y = as.factor(substr(DATE, 0, 4))) %>%
   mutate(LATITUDE = as.numeric(as.character(reportages$LATITUDE))) %>%
   mutate(LONGITUDE = as.numeric(as.character(reportages$LONGITUDE))) %>%
-  mutate(VILLE = as.character(reportages$VILLE)) %>%
+  mutate(LIEU = as.character(reportages$LIEU)) %>%
   mutate(PAYS = as.character(reportages$PAYS)) %>%
   mutate(TITRE = as.character(reportages$TITRE)) %>%
   mutate(URL = as.character(reportages$URL))
@@ -56,7 +56,7 @@ ui <- dashboardPage(
   skin = "blue",
   header <- dashboardHeader(title = "Les Arpenteurs (bêta)", titleWidth = 300,
                             tags$li(class = "dropdown", tags$a(href="https://twitter.com/gillesbastin?lang=fr", tags$span(style="color:black", icon("twitter")), tags$span(style="color:black", "Fil d'actualité"), target = "_blank")),
-                            tags$li(class = "dropdown", tags$a(href="https://github.com/gillesbastin/reporters", tags$span(style="color:black", icon("github")), tags$span(style="color:black", "Code Source"), target = "_blank"))
+                            tags$li(class = "dropdown", tags$a(href="https://github.com/gillesbastin/les-arpenteurs", tags$span(style="color:black", icon("github")), tags$span(style="color:black", "Code Source"), target = "_blank"))
                             ),
   
   
@@ -93,8 +93,7 @@ ui <- dashboardPage(
         h5("Une cartographie collaborative du reportage dans la presse française au début du XXème siècle"),
         hr(),
         h4("Le projet"),
-        "Le projet « Les arpenteurs » a pris naissance dans le cadre d'un cours d'Histoire des pratiques journalistiques donné 
-        par Gilles Bastin à l'",
+        "Le projet « Les arpenteurs » a pris naissance dans le cadre d'un cours d'Histoire des pratiques journalistiques donné à l'",
         tags$a(href="http://www.ejdg.fr/", "École de journalisme de Grenoble"),
         "(Université Grenoble Alpes / Sciences Po Grenoble) à partir de l'année 2017-2018.",
         "L'objectif de ce projet est de documenter et de cartographier de la manière la plus exhaustive possible 
@@ -104,8 +103,8 @@ ui <- dashboardPage(
         "Les étudiant•e•s qui participent à ce cours ont contribué au projet en choisissant chacun un ou 
         une reporter dont ils ont recherché tous les reportages dans la presse française sur le portail",
         tags$a(href="https://www.retronews.fr/", "RetroNews."),
-        "Ces données ont été nettoyées et complétées (notamment en recherchant dans le texte de l'article la ville dans laquelle 
-        se trouve le reporter puis en cherchant ses coordonnées géographiques).",
+        "Ces données ont été nettoyées et complétées (notamment en recherchant dans le texte de l'article le lieu dans lequel 
+        se trouve le reporter (en général une ville) puis en cherchant ses coordonnées géographiques).",
         "Elles ont été agrégées dans une base de données à laquelle ce site donne accès sous différentes formes.", 
         "Les étudiant•e•s de ce cours ont aussi écrit un portrait de leur reporter.",
         br(),
@@ -114,7 +113,7 @@ ui <- dashboardPage(
         Un onglet permet aussi d'accéder aux biographies des reporters.",
         "Plusieurs filtres permettent de restreindre les résultats affichés en fonction d'une période, d'un nom de reporter, d'un titre de journal ou d'un pays.",
         br(),
-        "En choisissant un•e reporter il est donc possible d'observer l'ensemble des villes qu'il ou elle a visitées mais aussi 
+        "En choisissant un•e reporter il est donc possible d'observer l'ensemble des lieux qu'il ou elle a visités mais aussi 
         l'ensemble des journaux pour lesquels il ou elle a travaillé. La carte permet aussi de rendre visible l'évolution de l'attention 
         publique au monde à laquelle les journaux ont largement participé à cette période. L'évolution de la carte des reportages 
         dans les temps montre bien par exemple les pays, les régions ou les sujets qui ont tour à tour capté une part de cette attention.",
@@ -137,19 +136,18 @@ ui <- dashboardPage(
         "Le projet « Les arpenteurs » est réalisé en partenariat avec le portail ",
         tags$a(href = "http://retronews.fr/", "RetroNews"),
         "de la BnF.",
+        "Il a bénéficié du soutien du ",
+        tags$a(href="https://data-institute.univ-grenoble-alpes.fr/", "Data Institute"),
+        "de l'Université Grenoble Alpes.",
         br(),
-        "La première version de la carte interactive a été réalisée en Shiny (R) par ",
-        tags$strong("Amine Gandriche"),
-        "et ",
-        tags$strong("Hamza Moussafir"),
-        "dans le cadre d'un projet tutoré du",
-        tags$a(href="http://formations.univ-grenoble-alpes.fr/fr/catalogue/master-XB/sciences-humaines-et-sociales-SHS/master-mathematiques-et-informatique-appliquees-aux-sciences-humaines-et-sociales-miashs-program-master-mathematiques-informatique-appliquees-et-sciences-humaines-et-sociales/parcours-statistique-et-sciences-de-donnees-ssd-subprogram-parcours-statistiques-et-sciences-de-donnees-ssd.html", "Master MIASHS"),
-        "de l'Université Grenoble Alpes).",
-        br(),
-        "Les étudiant•e•s de l'",
+        "La collecte des données a été assurée principalement par les étudiant•e•s de l'",
         tags$a(href="http://www.ejdg.fr/", "École de journalisme de Grenoble"),
-        "qui ont contribué à la recherche d'informations : Clothilde Dumay (Alexandra David-Néel et Lucie Delarue-Mardrus), Céline Legay et Lysandra Chadefaux (Edouard Helsey),
-        Pierre Mouny et Augustine Peny (Jean et Jérôme Tharaud), Alexandre Lepère et Leo Corcos (Gaston Leroux)"
+        ": Clothilde Dumay (Alexandra David-Néel et Lucie Delarue-Mardrus), Céline Legay et Lysandra Chadefaux (Edouard Helsey),
+        Pierre Mouny et Augustine Peny (Jean et Jérôme Tharaud), Alexandre Lepère et Leo Corcos (Gaston Leroux)…",
+        br(),
+        "La première version de la carte interactive a été réalisée en Shiny (R) par Amine Gandriche et Hamza Moussafir dans le cadre d'un projet tutoré du",
+        tags$a(href="http://formations.univ-grenoble-alpes.fr/fr/catalogue/master-XB/sciences-humaines-et-sociales-SHS/master-mathematiques-et-informatique-appliquees-aux-sciences-humaines-et-sociales-miashs-program-master-mathematiques-informatique-appliquees-et-sciences-humaines-et-sociales/parcours-statistique-et-sciences-de-donnees-ssd-subprogram-parcours-statistiques-et-sciences-de-donnees-ssd.html", "Master MIASHS"),
+        "de l'Université Grenoble Alpes)."
       ),
       
       # BIOGRAPHIES
@@ -332,7 +330,7 @@ server <- function(input, output,session) {
                                                                "<br>",
                                                                "<strong>Date :</strong>",DATE,
                                                                "<br>",
-                                                               "<strong>Ville :</strong>",VILLE,
+                                                               "<strong>Lieu :</strong>",LIEU,
                                                                "<br>",
                                                                "<strong>Titre :</strong>",TITRE,
                                                                "<br>",
